@@ -10,17 +10,16 @@ const WS_PORT = 5000;
 const http_server = await create_http_server();
 http_server.listen(PORT, () => console.log(`Server running at http://${get_ipv4_address()[0] ?? '0.0.0.0'}:${PORT}/`));
 
+    const players = {};
 
-const players = {};
+    const wss = new WebSocketServer({ port: WS_PORT });
 
-const wss = new WebSocketServer({ port: WS_PORT });
+    wss.on('connection', (ws, req) => {
+        console.log(`Client ${req.socket.remoteAddress}:${req.socket.remotePort} established connection.`);
+        const client_id = create_guid();
 
-wss.on('connection', (ws, req) => {
-    console.log(`Client ${req.socket.remoteAddress}:${req.socket.remotePort} established connection.`);
-    const client_id = create_guid();
-
-    ws.on('message', function message(data) {
-        const result = JSON.parse(data.toString('utf-8'));
+        ws.on('message', function message(data) {
+            const result = JSON.parse(data.toString('utf-8'));
         console.log(result);
 
         if (!result.method) return;

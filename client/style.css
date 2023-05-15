@@ -1,0 +1,129 @@
+/* ======================================= 
+    GLOBAL SETTINGS
+======================================= */
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html {
+    box-sizing: border-box;
+    font-size: 62.5%;
+    overflow: hidden;
+}
+
+body {
+    /* font-family: $font-family; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #111111;
+    font-weight: 500;
+    line-height: 1.6;
+    background: #fff3bf;
+
+    height: 100vh;
+    width: 100vw;
+}
+
+.connection-status {
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    padding: 5px;
+    line-height: 1;
+    font-size: 2rem;
+}
+
+#status-text {
+    font-weight: bold;
+}
+
+/* ======================================= 
+    START PAGE
+======================================= */
+
+.start-page-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.start-page-container h1 {
+    text-align: center;
+}
+
+.start-page-container input {
+    /* display: inline-block; */
+    padding: 5px 10px;
+    font-size: 1.8rem;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+/* ======================================= 
+    UTILITY CLASSES
+======================================= */
+
+.btn {
+    font-size: 1.8rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid rgb(80, 80, 80);
+    background-color: #69db7c;
+    color: #000;
+    transition: 0.1s;
+}
+
+.text-field:focus {
+    outline: none;
+}
+
+.bg-error {
+    background-color: #ffc9c9;
+    animation: wiggle 0.5s;
+}
+
+.btn:hover {
+    background-color: #51cf66;
+    cursor: pointer;
+    box-shadow: 8px 8px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.btn:active {
+    background-color: #69db7c;
+    transform: scale(0.97);
+    box-shadow: 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+.connection-status p {
+    display: inline-block;
+}
+
+.status-online {
+    color: #0de40d;
+}
+
+.status-offline {
+    color: #333;
+}
+
+.status-error {
+    color: #fa0000;
+}
+
+/* ======================================= 
+    ANIMATIONS
+======================================= */
+
+@keyframes wiggle {
+    5%, 90%         { transform: translate3d(-1px, 0, 0); }
+    20%, 80%        { transform: translate3d(2px, 0, 0); }
+    30%, 50%, 70%   { transform: translate3d(-4px, 0, 0); }
+    40%, 60%        { transform: translate3d(4px, 0, 0); }
+}
