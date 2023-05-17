@@ -24,10 +24,14 @@ http_server.listen(PORT, () => console.log(`Server running at http://${get_ipv4_
 
         if (!result.method) return;
 
-        if (result.method === 'connect') {
+        if (result.method === 'join-game') {
             const player =  new Player(ws, client_id, result.name, req.socket.remoteAddress, req.socket.remotePort);
             players[client_id] = player;
-            ws.send(JSON.stringify({ method: 'connect-accept', id: client_id }));
+            ws.send(JSON.stringify({ 
+                method: 'join-accept',
+                id: client_id,
+                players: players,
+            }));
 
             for (const [id, value] of Object.entries(players)) {
                 if (id === client_id) continue;

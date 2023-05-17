@@ -1,6 +1,10 @@
 import { create } from "../helpers.js";
 
-function StartPage() {
+/**
+ * Returns Start component
+ * @param {WebSocket} ws - Websocket object containing TCP connection
+ */
+function StartPage(ws) {
     const inputField = create('input', {
         classList: 'text-field',
         placeholder: 'What is your name?'
@@ -17,7 +21,10 @@ function StartPage() {
             return
         }
 
-        console.log(inputField.value)
+        ws.send(JSON.stringify({
+            method: 'join-game',
+            name: text
+        }));
     }
 
     const button = create('button', {
