@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
 /* ======================================= 
     GLOBAL SETTINGS
 ======================================= */
@@ -14,10 +16,17 @@ html {
     box-sizing: border-box;
     font-size: 62.5%;
     overflow: hidden;
+    height: -webkit-fill-available;
+    height: -moz-available;
 }
 
 body {
-    /* font-family: $font-family; */
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+        "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -26,8 +35,16 @@ body {
     line-height: 1.6;
     background: #fff3bf;
 
-    height: 100vh;
     width: 100vw;
+    height: inherit;
+}
+
+#root {
+    width: 100%;
+    height: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .connection-status {
@@ -48,22 +65,120 @@ body {
     START PAGE
 ======================================= */
 
-.start-page-container {
+.start-container {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.start-page-container h1 {
+.start-container h1 {
     text-align: center;
 }
 
-.start-page-container input {
+.start-container input {
     /* display: inline-block; */
     padding: 5px 10px;
     font-size: 1.8rem;
     outline: none;
     border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.start-container .error-message {
+    position: absolute;
+    top: -30px;
+    font-size: 1.4rem;
+    color: red;
+}
+
+/* ======================================= 
+    LOBBY PAGE
+======================================= */
+
+.lobby-container {
+    position: relative;
+    min-width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.lobby-container button.ready {
+    color: #fff;
+    background-color: rgb(243, 26, 26);
+}
+
+.players-container {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 10px;
+    width: 100%;
+}
+
+.player-box {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    padding: 5px 10px;
+    width: 100%;
+    min-width: 300px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.player-box .player-color {
+    height: 15px;
+    width: 15px;
+    border-radius: 1000px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.player-box .ready-status {
+    color: green;
+    font-size: 1.4rem;
+    margin-left: auto;
+    text-transform: uppercase;
+}
+
+.timer-modal {
+    position: absolute;
+    left: 50%;
+    top: -30px;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+}
+
+@media screen and (max-width: 768px) {
+    .lobby-container {
+        min-width: 95%;
+    }
+
+    .players-container {
+        grid-template-columns: 1fr;
+    }
+
+    .timer-modal {
+        font-size: 4rem;
+        top: 50%;
+        background-color: rgba(255, 255, 255, 0.8);
+        height: 70px;
+        width: 100px;
+        border-radius: 15px;
+        box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }
 
 /* ======================================= 
@@ -72,12 +187,13 @@ body {
 
 .btn {
     font-size: 1.8rem;
-    padding: 5px 10px;
+    padding: 10px 20px;
     border-radius: 5px;
     border: 1px solid rgb(80, 80, 80);
     background-color: #69db7c;
     color: #000;
     transition: 0.1s;
+    min-width: 200px;
 }
 
 .text-field:focus {
@@ -122,8 +238,21 @@ body {
 ======================================= */
 
 @keyframes wiggle {
-    5%, 90%         { transform: translate3d(-1px, 0, 0); }
-    20%, 80%        { transform: translate3d(2px, 0, 0); }
-    30%, 50%, 70%   { transform: translate3d(-4px, 0, 0); }
-    40%, 60%        { transform: translate3d(4px, 0, 0); }
+    5%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
+    }
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
 }

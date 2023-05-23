@@ -1,30 +1,31 @@
-import Lobby from './components/Lobby.js';
+// @ts-check
+
 import Start from './components/Start.js';
 import { Status } from './model/entities.js'
 
 const status_text = document.querySelector('#status-text');
-const content = document.getElementById('content');
+const root = document.getElementById('root');
 
+const ws = new WebSocket(`ws://${window.location.hostname}:${5000}`);
 
 let id = undefined;
-const WS_PORT = 5000;
-
-const ws = new WebSocket(`ws://${window.location.hostname}:${WS_PORT}`);
+const players = {};
+let currentPage = Start(ws, changePage);
 
 ws.onopen = () => {
     console.log('Connection open');
-    // ws.send(JSON.stringify({ method: 'connect', name: input_name.value }));
     setStatus(Status.online);
 }
 
 ws.onmessage = (msg) => {
     const result = JSON.parse(msg.data);
+    // DEBUG
     console.log(result);
 
     if (!result.method) return;
 
-    if (result.method === 'join-accept') {
-        changePage(Lobby(ws));
+    if (Object.hasOwn(currentPage, 'event')) {
+        currentPage.event(result);
     }
 }
 
@@ -43,12 +44,14 @@ function setStatus(conn_status) {
 }
 
 function changePage(component) {
-    while (content.firstChild) {
-        content.firstChild.remove();
+    currentPage = component;
+
+    while (root.firstChild) {
+        root.firstChild.remove();
     }
 
-    content.append(component)
+    root.append(currentPage);
 }
 
 // Initial start page
-changePage(Start(ws));
+changePage(currentPage);

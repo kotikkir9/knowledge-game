@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "noEmit": true,
+        "target": "es2022"
+    },
+    "compileOnSave": false,
+    "include": ["./src/**/*.ts", "./src/**/*.js"],
+    "exclude": ["node_modules"]
+}

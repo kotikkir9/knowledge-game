@@ -7,6 +7,16 @@ export const create = (tag, assignments = {}, events = {}, ...children) => {
     }
 
     element.append(...children);
-    
+
     return element;
+}
+
+export const sleep = (ms, abortSignal = null) => {
+    return new Promise((resolve, reject) => {
+        let timeout = setTimeout(resolve, ms);
+        abortSignal?.addEventListener('abort', () => {
+            clearTimeout(timeout);
+            reject();
+        });
+    });
 }

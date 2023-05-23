@@ -1,3 +1,4 @@
+// @ts-check
 import * as fs from 'node:fs';
 import * as http from 'node:http';
 import * as path from 'node:path';
@@ -18,6 +19,10 @@ const MIME_TYPES = {
 
 const toBool = [() => true, () => false];
 
+/**
+ * Returns a simple http server that serves static files
+ * @returns {Promise<http.Server>}
+ */
 export async function create_http_server() {
     const server = http.createServer(async (req, res) => {
         // console.log(`${req.method} ${req.url}`);
