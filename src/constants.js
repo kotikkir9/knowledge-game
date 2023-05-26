@@ -1,4 +1,4 @@
-export const method = {
+export const ws_method = {
     ERROR: 'error',
 
     JOIN_GAME: 'join-game',

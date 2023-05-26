@@ -1,25 +1,26 @@
 // @ts-check
+import * as crypto from 'node:crypto'
 import { WebSocketServer } from 'ws';
 import { create_http_server } from './src/http_server.js';
 import { Player } from './src/model/Player.js';
-import { create_guid, get_ipv4_address } from './src/utility.js';
-import { method, colors } from './src/model/constants.js';
+import { get_ipv4_address } from './src/utility.js';
+import { ws_method as method, colors } from './src/constants.js';
+import { game_state as state } from './src/game_state.js';
+
+let interval = null; // Interval ref for setInterval
 
 const PORT = 8000;
 const WS_PORT = 5000;
+const MAX_PLAYERS = 8;
 
 const http_server = await create_http_server();
 http_server.listen(PORT, () => console.log(`Server running at http://${get_ipv4_address()[0] ?? '0.0.0.0'}:${PORT}/`));
-
-const players = {};
-let game_started = false;
-let interval = null;
 
 const wss = new WebSocketServer({ port: WS_PORT });
 
 wss.on('connection', (ws, req) => {
     // console.log(`Client ${req.socket.remoteAddress}:${req.socket.remotePort} established connection.`);
-    const client_id = create_guid();
+    const client_id = crypto.randomUUID();
 
     ws.on('message', function message(data) {
         const result = JSON.parse(data.toString('utf-8'));
@@ -31,29 +32,33 @@ wss.on('connection', (ws, req) => {
         // PLAYER JOINS THE GAME
         // =================================
         if (result.method === method.JOIN_GAME) {
-            for (const [, value] of Object.entries(players)) {
-                if (value.name === result.name) {
-                    ws.send(JSON.stringify({
-                        method: method.ERROR,
-                        content: {
-                            message: `Name "${result.name}" is already taken.`
-                        },
-                    }));
+            if (state.game_started()) {
+                send_error_message(ws, 'The game session is already in progress.');
+                return;
+            }
 
+            if (state.get_players_count() == MAX_PLAYERS) {
+                send_error_message(ws, 'Sorry, the lobby is full.');
+                return;
+            }
+
+            for (const [, value] of state.get_players_entries()) {
+                if (value.name === result.name) {
+                    send_error_message(ws, `Name "${result.name}" is already taken.`);
                     return;
                 }
             }
 
             const player = new Player(ws, client_id, result.name, req.socket.remoteAddress, req.socket.remotePort, colors.shift());
-            players[client_id] = player;
-
+            state.add_player(player);
+            
             // Accept the 'join request' and return player data
             player.connection.send(JSON.stringify({
                 method: method.JOIN_ACCEPT,
                 content: {
                     id: client_id,
                     name: result.name,
-                    players: Object.entries(players).map(([key, val]) => {
+                    players: state.get_players_entries().map(([key, val]) => {
                         return {
                             id: key,
                             name: val.name,
@@ -65,7 +70,7 @@ wss.on('connection', (ws, req) => {
                 },
             }));
 
-            if (interval !== null) 
+            if (interval !== null)
                 cancel_timer();
 
             // Message to everyone that new player joined the lobby
@@ -77,11 +82,16 @@ wss.on('connection', (ws, req) => {
         }
 
         if (result.method === method.PLAYER_STATUS_CHANGE) {
-            players[client_id].ready = result.ready;
+            state.get_player(client_id).ready = result.ready;
+
+            broadcast(method.PLAYER_STATUS_CHANGE, {
+                id: client_id,
+                ready: result.ready,
+            });
 
             let start_game = true;
             if (result.ready) {
-                for (const [, value] of Object.entries(players)) {
+                for (const [, value] of state.get_players_entries()) {
                     if (value.ready === false) {
                         start_game = false;
                         break;
@@ -91,33 +101,38 @@ wss.on('connection', (ws, req) => {
                 start_game = false;
             }
 
-            broadcast(method.PLAYER_STATUS_CHANGE, {
-                id: client_id,
-                ready: result.ready
-            });
-
             if (interval !== null) {
                 cancel_timer();
             }
 
             if (start_game) {
+                if (state.get_players_count() < 2) return;
+
                 set_timer(() => {
                     broadcast(method.GAME_START);
+                    state.set_game_started(true);
                 }, 5);
             }
         }
     });
 
     ws.on('close', () => {
-        if (!game_started) {
-            if (!players[client_id]) return;
+        if (!state.game_started()) {
+            const player = state.get_player(client_id);
+            if (!player) return;
 
-            colors.push(players[client_id].color);
-            delete players[client_id];
+            colors.push(player.color);
+            state.remove_player(client_id);
 
             broadcast(method.PLAYER_DISCONNECT, { id: client_id });
 
             if (interval !== null) cancel_timer();
+        }
+
+        //TODO: need to find a way to reset the game
+        state.remove_player(client_id);
+        if (state.get_players_count() === 0) {
+            state.set_game_started(false);
         }
     });
 
@@ -134,7 +149,7 @@ wss.on('connection', (ws, req) => {
  * @param {string | null} exclude_id 
  */
 function broadcast(method, content = {}, exclude_id = null) {
-    for (const [id, value] of Object.entries(players)) {
+    for (const [id, value] of state.get_players_entries()) {
         if (exclude_id)
             if (id === exclude_id) continue;
 
@@ -159,7 +174,7 @@ function cancel_timer() {
  * @param {number} [seconds=0] - Number of seconds to set for the timer.
  * @returns {void}
  */
-function set_timer(cb = () => {}, seconds = 0) {
+function set_timer(cb = () => { }, seconds = 0) {
     clearInterval(interval);
 
     broadcast(method.TIMER_START, {
@@ -181,4 +196,13 @@ function set_timer(cb = () => {}, seconds = 0) {
             seconds: seconds,
         });
     }, 1000);
+}
+
+function send_error_message(ws, message) {
+    ws.send(JSON.stringify({
+        method: method.ERROR,
+        content: {
+            message: message,
+        },
+    }));
 }

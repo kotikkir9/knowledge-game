@@ -6,15 +6,15 @@ import * as path from 'node:path';
 const CLIENT_PATH = path.join(process.cwd(), './client');
 
 const MIME_TYPES = {
-    default: 'application/octet-stream',
-    html: 'text/html; charset=UTF-8',
-    js: 'application/javascript; charset=UTF-8',
-    css: 'text/css',
-    png: 'image/png',
-    jpg: 'image/jpg',
-    gif: 'image/gif',
-    ico: 'image/x-icon',
-    svg: 'image/svg+xml',
+    default:    'application/octet-stream',
+    html:       'text/html; charset=UTF-8',
+    js:         'application/javascript; charset=UTF-8',
+    css:        'text/css',
+    png:        'image/png',
+    jpg:        'image/jpg',
+    gif:        'image/gif',
+    ico:        'image/x-icon',
+    svg:        'image/svg+xml',
 };
 
 const toBool = [() => true, () => false];
@@ -27,7 +27,7 @@ export async function create_http_server() {
     const server = http.createServer(async (req, res) => {
         // console.log(`${req.method} ${req.url}`);
 
-        let filePath = path.join(CLIENT_PATH, req.url);
+        let filePath = path.join(CLIENT_PATH, req.url ?? '');
         const fileExists = await fs.promises.access(filePath).then(...toBool);
 
         if (req.url !== '/' && !fileExists) {
