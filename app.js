@@ -4,7 +4,7 @@ import { WebSocketServer } from 'ws';
 import { create_http_server } from './src/http_server.js';
 import { Player } from './src/model/Player.js';
 import { get_ipv4_address } from './src/utility.js';
-import { ws_method as method, colors } from './src/constants.js';
+import { ws_method as method, colors } from './src/game_config.js';
 import { game_state as state } from './src/game_state.js';
 
 let interval = null; // Interval ref for setInterval
@@ -29,7 +29,7 @@ wss.on('connection', (ws, req) => {
         if (!result.method) return;
 
         // =================================
-        // PLAYER JOINS THE GAME
+        // PLAYER JOIN
         // =================================
         if (result.method === method.JOIN_GAME) {
             if (state.game_started()) {
@@ -81,6 +81,10 @@ wss.on('connection', (ws, req) => {
             }, client_id);
         }
 
+
+        // =================================
+        // PLAYER STATUS CHANGE
+        // =================================
         if (result.method === method.PLAYER_STATUS_CHANGE) {
             state.get_player(client_id).ready = result.ready;
 
