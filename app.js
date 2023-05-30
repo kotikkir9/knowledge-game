@@ -16,6 +16,9 @@ const MAX_PLAYERS = 8;
 const http_server = await create_http_server();
 http_server.listen(PORT, () => console.log(`Server running at http://${get_ipv4_address()[0] ?? '0.0.0.0'}:${PORT}/`));
 
+
+
+
 const wss = new WebSocketServer({ port: WS_PORT });
 
 wss.on('connection', (ws, req) => {
@@ -178,7 +181,7 @@ function cancel_timer() {
  * @param {number} [seconds=0] - Number of seconds to set for the timer.
  * @returns {void}
  */
-function set_timer(cb = () => { }, seconds = 0) {
+function set_timer(cb = () => {}, seconds = 0) {
     clearInterval(interval);
 
     broadcast(method.TIMER_START, {
@@ -202,6 +205,10 @@ function set_timer(cb = () => { }, seconds = 0) {
     }, 1000);
 }
 
+/**
+ * @param {import("ws").WebSocket} ws
+ * @param {string} message
+ */
 function send_error_message(ws, message) {
     ws.send(JSON.stringify({
         method: method.ERROR,

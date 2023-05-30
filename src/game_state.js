@@ -1,14 +1,6 @@
 class GameState {
     #game_started = false;
-    #max_allowed_players = 8;
     #players = {}
-
-    constructor() {
-    }
-
-    set_max_allowed_players(max) {
-        this.#max_allowed_players = max;
-    }
 
     set_game_started(state) {
         this.#game_started = state;

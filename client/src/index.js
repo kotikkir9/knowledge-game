@@ -1,42 +1,43 @@
 // @ts-check
 
-import Start from './components/Start.js';
+import Start from './pages/Start.js';
 import { Status } from './model/entities.js'
 
 const status_text = document.querySelector('#status-text');
 const root = document.getElementById('root');
 
-const ws = new WebSocket(`ws://${window.location.hostname}:${5000}`);
+// const ws = new WebSocket(`ws://${window.location.hostname}:${5000}`);
 
 let id = undefined;
 const players = {};
-let currentPage = Start(ws, changePage);
+let currentPage = Start(changePage);
 
-ws.onopen = () => {
-    console.log('Connection open');
-    setStatus(Status.online);
-}
 
-ws.onmessage = (msg) => {
-    const result = JSON.parse(msg.data);
-    // DEBUG
-    console.log(result);
+// ws.onopen = () => {
+//     console.log('Connection open');
+//     setStatus(Status.online);
+// }
 
-    if (!result.method) return;
+// ws.onmessage = (msg) => {
+//     const result = JSON.parse(msg.data);
+//     // DEBUG
+//     console.log(result);
 
-    if (Object.hasOwn(currentPage, 'event')) {
-        currentPage.event(result);
-    }
-}
+//     if (!result.method) return;
 
-ws.onclose = () => {
-    console.log('connection closed');
-    setStatus(Status.offline);
-}
+//     if (Object.hasOwn(currentPage, 'event')) {
+//         currentPage.event(result);
+//     }
+// }
 
-ws.onerror = (err) => {
-    setStatus(Status.error);
-}
+// ws.onclose = () => {
+//     console.log('connection closed');
+//     setStatus(Status.offline);
+// }
+
+// ws.onerror = (err) => {
+//     setStatus(Status.error);
+// }
 
 function setStatus(conn_status) {
     status_text.textContent = conn_status;

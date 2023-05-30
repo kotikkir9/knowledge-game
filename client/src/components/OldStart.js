@@ -1,7 +1,7 @@
 // @ts-check
-import { create } from "../utility/helpers.js";
-import { state } from "../storage/state.js";
-import Lobby from "./Lobby.js";
+import { create } from "../utility/helpers";
+import { state } from "../storage/state";
+import Lobby from "../pages/Lobby";
 
 /**
  * Returns Start component
