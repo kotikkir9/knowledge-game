@@ -1,0 +1,19 @@
+.header {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+}
+
+.status {
+    display: flex;
+    gap: 5px;
+    line-height: 1;
+    font-size: 1.8rem;
+}
+
+.status p:nth-child(2) {
+    font-weight: bold;
+}

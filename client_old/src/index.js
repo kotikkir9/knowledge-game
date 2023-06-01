@@ -1,7 +1,7 @@
 // @ts-check
 
 import Start from './pages/Start.js';
-import { Status } from './model/entities.js'
+import { Status } from './model/entities.js';
 
 const status_text = document.querySelector('#status-text');
 const root = document.getElementById('root');

@@ -1,6 +1,6 @@
 // @ts-check
-import { create } from "../utility/helpers";
-import { state } from "../storage/state";
+import { create } from "../utility/helpers.js";
+import { state } from "../storage/state.js";
 
 /**
  * Returns Lobby component

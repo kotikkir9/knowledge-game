@@ -1,0 +1,14 @@
+.modal {
+    max-width: 600px;
+    max-height: 600px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.text {
+    font-size: 1.4rem;
+    padding: 5px;
+    line-height: 1;
+}

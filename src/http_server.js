@@ -3,7 +3,8 @@ import * as fs from 'node:fs';
 import * as http from 'node:http';
 import * as path from 'node:path';
 
-const CLIENT_PATH = path.join(process.cwd(), './client');
+// const DIST_PATH = path.join(process.cwd(), './client/dist');
+const DIST_PATH = path.join(process.cwd(), './client_old');
 
 const MIME_TYPES = {
     default:    'application/octet-stream',
@@ -27,7 +28,7 @@ export async function create_http_server() {
     const server = http.createServer(async (req, res) => {
         // console.log(`${req.method} ${req.url}`);
 
-        let filePath = path.join(CLIENT_PATH, req.url ?? '');
+        let filePath = path.join(DIST_PATH, req.url ?? '');
         const fileExists = await fs.promises.access(filePath).then(...toBool);
 
         if (req.url !== '/' && !fileExists) {

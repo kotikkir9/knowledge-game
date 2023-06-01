@@ -1,0 +1,62 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html {
+    box-sizing: border-box;
+    font-size: 62.5%;
+    overflow: hidden;
+    height: -webkit-fill-available;
+    height: -moz-available;
+}
+
+body {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+        "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #111111;
+    font-weight: 500;
+    line-height: 1.6;
+    background: #fff3bf;
+
+    width: 100vw;
+    height: inherit;
+}
+
+#root {
+    width: 100%;
+    height: inherit;
+}
+
+/* ================================
+    UTILS
+================================ */ 
+
+.fill {
+    width: 100%;
+    height: 100%;
+}
+
+.primary {
+    background-color: #69db7c;
+}
+
+.primary:active {
+    background-color: #69db7c;
+}
+
+.primary:hover {
+    background-color: #51cf66;
+}
