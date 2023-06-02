@@ -5,7 +5,7 @@ function Header() {
         <header class={styles.header}>
             <div class={styles.status}>
                 <p>Status:</p>
-                <p>Not Connected</p>
+                <p>None</p>
             </div>
             <div>Music player placeholder</div>
         </header>

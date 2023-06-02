@@ -9,6 +9,74 @@
 
 .text {
     font-size: 1.4rem;
-    padding: 5px;
+    padding: 10px 5px;
     line-height: 1;
+}
+
+.server-container {
+    background-color: rgba(235, 240, 255, 0.6);
+    font-size: 1.2rem;
+    border: 1px solid rgba(0, 0, 0, 0.6);
+    margin: 5px;
+    overflow-y: auto;
+    height: 80%;
+}
+
+.server-container table {
+    text-align: left;
+    width: 100%;
+    overflow-x: hidden;
+    user-select: none;
+    -ms-user-select: none;
+}
+
+.server-container table thead {
+    background-color: #fff5c1;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.6);
+}
+
+.server-container table th {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.6);
+}
+
+.server-container table th,
+.server-container table td {
+    padding: 2px;
+    padding-left: 5px;
+}
+
+.server-container table td:last-child,
+.server-container table th:last-child {
+    padding-right: 10px;
+}
+
+.server-container table tbody td {
+    height: 40px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.server-container table tbody tr:hover {
+    cursor: pointer;
+    background-color: #7df07d;
+}
+
+.btn-container {
+    height: fit-content;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding: 0 5px 10px 0;
+}
+
+.refresh-btn {
+    font-size: 1.4rem;
+}
+
+@media screen and (max-width: 700px) {
+    .server-container table tbody td {
+        height: 60px;
+    }
 }

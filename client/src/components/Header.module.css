@@ -1,10 +1,12 @@
 .header {
     width: 100%;
-    height: fit-content;
+    /* height: fit-content; */
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 5px;
+    height: 30px;
+    margin-bottom: -30px;
 }
 
 .status {
