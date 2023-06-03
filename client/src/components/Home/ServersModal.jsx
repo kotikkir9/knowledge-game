@@ -1,8 +1,8 @@
 import { For, createSignal } from "solid-js";
 import ServerItem from "./ServerItem";
 import styles from "./ServersModal.module.css";
-import Button from "./common/Button";
-import Modal from "./common/Modal";
+import Button from "../UI/Button";
+import Modal from "../UI/Modal";
 
 function ServersModal(props) {
     const items = [];
@@ -27,7 +27,7 @@ function ServersModal(props) {
         <Modal class={styles.modal} onClose={props.onClose}>
             <p class={styles.text}>Servers</p>
 
-            <div class={styles["server-container"]}>
+            <section class={styles["server-container"]}>
                 <table cellspacing="0">
                     <thead>
                         <tr>
@@ -51,13 +51,13 @@ function ServersModal(props) {
                         </For>
                     </tbody>
                 </table>
-            </div>
+            </section>
 
-            <div class={styles["btn-container"]}>
+            <section class={styles["btn-container"]}>
                 <Button class={styles["refresh-btn"]} onClick={refresh}>
                     Refresh
                 </Button>
-            </div>
+            </section>
         </Modal>
     );
 }

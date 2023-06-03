@@ -1,11 +1,11 @@
-import Header from "./components/Header";
-import StartPage from "./pages/StartPage";
+import Header from "./components/Layout/Header";
+import HomePage from "./pages/HomePage";
 
 function App() {
     return (
         <>
             <Header />
-            <StartPage />
+            <HomePage />
         </>
     );
 }
