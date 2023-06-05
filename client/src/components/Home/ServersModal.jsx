@@ -19,7 +19,8 @@ function ServersModal(props) {
 
     const [servers, setServers] = createSignal(items);
 
-    function refresh() {
+    async function refresh() {
+        // await fetch('/api/test');
         setServers((prev) => prev.slice(0, -1));
     }
 

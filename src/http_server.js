@@ -3,8 +3,7 @@ import * as fs from 'node:fs';
 import * as http from 'node:http';
 import * as path from 'node:path';
 
-// const DIST_PATH = path.join(process.cwd(), './client/dist');
-const DIST_PATH = path.join(process.cwd(), './client_old');
+const DIST_PATH = path.join(process.cwd(), './client/dist');
 
 const MIME_TYPES = {
     default:    'application/octet-stream',

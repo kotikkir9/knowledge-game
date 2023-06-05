@@ -60,3 +60,7 @@ body {
 .primary:hover {
     background-color: #51cf66;
 }
+
+.w-100 {
+    width: 100%;
+}
