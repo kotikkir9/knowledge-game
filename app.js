@@ -6,6 +6,7 @@ import { Player } from './src/model/Player.js';
 import { get_ipv4_address } from './src/utility.js';
 import { ws_method as method, colors } from './src/game_config.js';
 import { game_state as state } from './src/game_state.js';
+import { create_game_server, get_all_servers } from './src/api_routes.js';
 
 let interval = null; // Interval ref for setInterval
 
@@ -13,10 +14,15 @@ const PORT = 8000;
 const WS_PORT = 5000;
 const MAX_PLAYERS = 8;
 
-const http_server = await create_http_server();
+const routes = {
+    '/api/servers': {
+        get: get_all_servers,
+        post: create_game_server
+    },
+}
+
+const http_server = await create_http_server(routes);
 http_server.listen(PORT, () => console.log(`Server running at http://${get_ipv4_address()[0] ?? '0.0.0.0'}:${PORT}/`));
-
-
 
 
 const wss = new WebSocketServer({ port: WS_PORT });

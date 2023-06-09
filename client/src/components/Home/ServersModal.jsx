@@ -1,27 +1,21 @@
-import { For, createSignal } from "solid-js";
+import { For, createResource } from "solid-js";
 import ServerItem from "./ServerItem";
 import styles from "./ServersModal.module.css";
 import Button from "../UI/Button";
 import Modal from "../UI/Modal";
+import LoadingSpinner from "../UI/LoadingSpinner";
+import { api } from "../../fetch";
+
+async function fetchServers() {
+    const res = await fetch(api.servers);
+    return await res.json();
+}
 
 function ServersModal(props) {
-    const items = [];
-    for (let i = 0; i < 15; i++) {
-        items.push({
-            name: Math.round(Math.random() * 1_000_000_000),
-            // name: 'This is a very loooooooooooooooong server name hell yeah',
-            playerCount: 5,
-            maxAllowed: 8,
-            status: "Pending",
-            locked: i % 2 === 0,
-        });
-    }
+    const [servers, { refetch }] = createResource(fetchServers);
 
-    const [servers, setServers] = createSignal(items);
-
-    async function refresh() {
-        // await fetch('/api/test');
-        setServers((prev) => prev.slice(0, -1));
+    function refresh() {
+        !servers.loading && refetch();
     }
 
     return (
@@ -39,17 +33,26 @@ function ServersModal(props) {
                         </tr>
                     </thead>
                     <tbody>
-                        <For each={servers()}>
-                            {(e) => (
-                                <ServerItem
-                                    locked={e.locked}
-                                    name={e.name}
-                                    playerCount={e.playerCount}
-                                    maxAllowed={e.maxAllowed}
-                                    status={e.status}
-                                />
-                            )}
-                        </For>
+                        <Show
+                            when={!servers.loading && !servers.error}
+                            fallback={
+                                <span class="centered">
+                                    {servers.loading ? <LoadingSpinner /> : "Something went wrong..."}
+                                </span>
+                            }
+                        >
+                            <For each={servers()}>
+                                {(e) => (
+                                    <ServerItem
+                                        locked={e.locked}
+                                        name={e.name}
+                                        playerCount={e.playerCount}
+                                        maxAllowed={e.maxAllowed}
+                                        status={e.status}
+                                    />
+                                )}
+                            </For>
+                        </Show>
                     </tbody>
                 </table>
             </section>
