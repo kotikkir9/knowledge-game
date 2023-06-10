@@ -17,10 +17,8 @@ function CreateGameModal(props) {
         const inputValues = {};
 
         for (let i = 0; i < inputs.length; i++) {
-            const input = inputs[i];
-
-            if (input.localName === "input") {
-                inputValues[input.name] = input.value;
+            if (inputs[i].localName === "input") {
+                inputValues[inputs[i].name] = inputs[i].value;
             }
         }
 
@@ -43,7 +41,7 @@ function CreateGameModal(props) {
                             class="w-100"
                             name="password"
                         />
-                        {/* <input type="checkbox" onInput={triggerShowPassword} /> */}
+                        <input type="checkbox" onInput={triggerShowPassword} />
                     </div>
                     <div class={styles.form}>
                         <label>Max allowed players (2-10)</label>
